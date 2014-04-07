@@ -3,12 +3,6 @@ import sys
 import json
 
 
-# every event response contains the full repo metadata
-# which seems very ineficient. probably best to have a separate
-# job compile the unique repo list with metadata, then use this as
-# a reference for the event counting reducer
-
-
 for line in sys.stdin:
   cleanline = line.strip()
 
