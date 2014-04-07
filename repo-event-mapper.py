@@ -3,20 +3,32 @@ import sys
 import json
 
 
-for line in sys.stdin:
+# every event response contains the full repo metadata
+# which seems very ineficient. probably best to have a separate
+# job compile the unique repo list with metadata, then use this as
+# a reference for the event counting reducer
 
+
+for line in sys.stdin:
   cleanline = line.strip()
 
   try:
     event = json.loads(line)
+    repo = event['repository']
 
-    event_type = event['type']
-    repo_id = event['repository']['id']
-    repo_owner = event['repository']['owner']
-    repo_name = event['repository']['name']
+    repo_id = str(repo['id'])
+    repo_fullname = '%s/%s' % (repo['owner'], repo['name'])
+
+    # sometimes repos don't have a language defined
+    if 'language' not in repo:
+      repo['language'] = 'unknown'
 
   except:
     # ignore bad input
     continue
 
-  print '%s\t%s/%s\t%s' % (repo_id, repo_owner, repo_name, event_type)
+  print '\t'.join([
+    repo_id,
+    repo_fullname,
+    repo['language'], 
+    event['type']])
