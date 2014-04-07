@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import urllib2
 
 
 # tally event counts per repo
@@ -37,9 +38,8 @@ event_template = [0] * 23
 
 for line in sys.stdin:
 
-  # clean and convert input
   cleanline = line.strip()
-  repo_id, event_type = cleanline.split('\t', 1)
+  repo_id, repo_name, event_type = cleanline.split('\t', 2)
 
   if repo_id not in repo_event_counts:
     repo_event_counts[repo_id] = list(event_template)
@@ -48,9 +48,7 @@ for line in sys.stdin:
 
 
 for id, event_counts in repo_event_counts.iteritems():
-  # get lang via github api
-  lang = 'notset'
 
   all_counts = '\t'.join(str(c) for c in event_counts)
 
-  print '\t'.join([id, lang, all_counts])
+  print '\t'.join([id, repo_name, all_counts])

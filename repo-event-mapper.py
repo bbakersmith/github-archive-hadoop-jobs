@@ -9,11 +9,14 @@ for line in sys.stdin:
 
   try:
     event = json.loads(line)
+
+    event_type = event['type']
+    repo_id = event['repository']['id']
+    repo_owner = event['repository']['owner']
+    repo_name = event['repository']['name']
+
   except:
     # ignore bad input
     continue
 
-  event_type = event['type']
-  repo_id = event['repository']['id']
-
-  print '%s\t%s' % (repo_id, event_type)
+  print '%s\t%s/%s\t%s' % (repo_id, repo_owner, repo_name, event_type)
