@@ -14,7 +14,7 @@ I have downloaded 3 years of GitHub data, which has the following attributes:
 
 ## Jobs
 
-Run `rake -T` from the project root to display a list of commands. 
+Run `rake -T` from the project root to display a list of commands. Requires Ruby and Rake.
 
 ### 1. Repo Event Count
 
