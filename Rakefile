@@ -2,9 +2,10 @@ HADOOP_ROOT = "/home/ben/projects/roosevelt/312/hadoop-1.2.1"
 BASIC_HADOOP_TASK = "#{HADOOP_ROOT}/bin/hadoop jar #{HADOOP_ROOT}/contrib/streaming/hadoop-streaming-1.2.1.jar -jobconf mapred.reduce.tasks=1"
 
 # run tasks with hadoop
-namespace :run do
+namespace :run_hadoop do
 
-  task :event_count do
+  desc "Run Repo Event Count job with Hadoop"
+  task :repo_event_count do
     cmd = [
       BASIC_HADOOP_TASK,
       "-file ./repo-event-count-mapper.py",
@@ -19,17 +20,13 @@ namespace :run do
 
 end
 
-# run tasks with simple unix pipes
-namespace :run_simple do
+namespace :run do
 
+  desc "Run Language Event Count job with Unix pipes (no Hadoop)"
   task :language_event_count do
-    print "Enter path to data file (defaults to 'data/2014-02-28-20.json'): "
-    data_file = STDIN.gets.chomp
 
-    if(data_file == '')
-      data_file = 'data/2014-02-28-20.json'
-    end
-
+    data_file = 'data/2014-02-28-20.json'
+    
     cmd = [
       "cat #{data_file}",
       "python repo-event-count-mapper.py",
