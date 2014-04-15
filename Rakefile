@@ -4,7 +4,7 @@ BASIC_HADOOP_TASK = "#{HADOOP_ROOT}/bin/hadoop jar #{HADOOP_ROOT}/contrib/stream
 # run tasks with hadoop
 namespace :run_hadoop do
 
-  desc "Run Repo Event Count job with Hadoop"
+  # desc "Run Repo Event Count job with Hadoop"
   task :repo_event_count do
     cmd = [
       BASIC_HADOOP_TASK,
@@ -21,6 +21,19 @@ namespace :run_hadoop do
 end
 
 namespace :run do
+
+  desc "Run Repo Event Count job with Unix pipes (no Hadoop)"
+  task :repo_event_count do
+
+    data_file = 'data/2014-02-28-20.json'
+    
+    cmd = [
+      "cat #{data_file}",
+      "python repo-event-count-mapper.py",
+      "python repo-event-count-reducer.py"
+    ].join(' | ')
+    system cmd
+  end
 
   desc "Run Language Event Count job with Unix pipes (no Hadoop)"
   task :language_event_count do
