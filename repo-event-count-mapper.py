@@ -11,7 +11,7 @@ for line in sys.stdin:
     repo = event['repository']
 
     repo_id = str(repo['id'])
-    repo_fullname = '%s/%s' % (repo['owner'], repo['name'])
+    actor = event['actor']
 
     # sometimes repos don't have a language defined
     if 'language' not in repo:
@@ -22,7 +22,7 @@ for line in sys.stdin:
     continue
 
   print '\t'.join([
+    actor,
     repo_id,
-    repo_fullname,
     repo['language'], 
     event['type']])

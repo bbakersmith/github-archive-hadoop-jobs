@@ -9,22 +9,21 @@ repos = {}
 
 for line in sys.stdin:
   cleanline = line.strip()
-  repo_id, repo_fullname, repo_language, event_type = cleanline.split('\t')
+  actor, repo_id, repo_language, event_type = cleanline.split('\t')
 
   if repo_id not in repos:
     repos[repo_id] = {
       'id': repo_id,
-      'name': repo_fullname,
       'language': repo_language,
-      'events': {event_type: 1}
+      'events': {event_type: [actor]}
     }
 
   else:
     if event_type not in repos[repo_id]['events']:
-      repos[repo_id]['events'][event_type] = 1
+      repos[repo_id]['events'][event_type] = [actor]
 
     else:
-      repos[repo_id]['events'][event_type] += 1
+      repos[repo_id]['events'][event_type].append(actor)
 
 
 for id, data in repos.iteritems():
